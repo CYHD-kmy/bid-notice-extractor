@@ -1,0 +1,40 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "packages": {
+    "langextract": "1.7.1",
+    "pdfplumber": "0.11.10",
+    "reportlab": "4.4.9",
+    "pydantic": "2.13.5",
+    "requests": "2.34.2",
+    "pdfminer.six": "20260107"
+  },
+  "model": {
+    "name": "qwen3-vl:8b",
+    "model": "qwen3-vl:8b",
+    "modified_at": "2026-08-26T16:05:56.365344725+08:00",
+    "size": 6140415879,
+    "digest": "901cae73216286ea8c5aba8b46d307ff7188f737285ec500c795a12f05225d28",
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen3vl",
+      "families": [
+        "qwen3vl"
+      ],
+      "parameter_size": "8.8B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 262144,
+      "embedding_length": 4096
+    },
+    "capabilities": [
+      "completion",
+      "vision",
+      "tools",
+      "thinking"
+    ]
+  },
+  "ollama_version": {
+    "version": "0.35.1"
+  },
+  "pdfjs_dist": "6.4.299"
+}

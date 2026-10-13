@@ -1,0 +1,4 @@
+{
+  "error": "Ollama API error: 输出达到token上限，结果可能截断；已保存原始响应，不自动重试",
+  "model_calls": 1
+}

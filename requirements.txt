@@ -1,0 +1,4 @@
+# Run from the project root. The checked-out commits are in THIRD_PARTY.md.
+-e ./references/langextract
+-e ./references/pdfplumber
+reportlab==4.4.9

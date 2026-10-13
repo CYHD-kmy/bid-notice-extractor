@@ -1,0 +1,4 @@
+﻿case_id,company,project,bidder,award_amount_raw,currency,award_date,disclosure_date,amount_in_base_currency,validation_status
+01_single,华澄智能工程股份有限公司,青岚智慧园区配套工程,青岚市公共建设中心,"人民币1,280.50万元",人民币,2026年10月10日,2026年10月13日,12805000,valid
+02_multi,华澄智能工程股份有限公司,北辰综合管廊一期工程,北辰市基础设施建设中心,人民币0.326亿元,人民币,2026年10月11日,2026年10月13日,32600000,valid
+02_multi,华澄智能工程股份有限公司,河畔智慧园区配套工程,河畔市园区运营中心,,,2026年10月12日,2026年10月13日,,needs_review

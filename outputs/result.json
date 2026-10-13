@@ -1,0 +1,569 @@
+{
+  "run_id": "20261013T061911555399",
+  "meta": {
+    "mode": "live",
+    "model": "qwen3-vl:8b",
+    "model_calls_this_run": 1,
+    "original_live_calls": 1,
+    "elapsed_seconds": 22.022,
+    "source_sha256": "a18408c58385edf96e46999d5f3f3165dba101fdae2607c03c55df92ed54d74e",
+    "synthetic_data": true
+  },
+  "metrics": {
+    "expected_events": 3,
+    "predicted_events": 3,
+    "matched_events": 3,
+    "missed_events": 0,
+    "extra_events": 0,
+    "event_precision": 1.0,
+    "event_recall": 1.0,
+    "event_complete_count": 3,
+    "event_complete_rate": 1.0,
+    "field_accuracy": 1.0,
+    "populated_field_accuracy": 1.0,
+    "missing_rate": 0.0,
+    "extra_rate": 0.0,
+    "fields": {
+      "company": {
+        "correct": 3,
+        "total": 3,
+        "populated_correct": 3,
+        "populated_total": 3,
+        "accuracy": 1.0,
+        "populated_accuracy": 1.0
+      },
+      "project": {
+        "correct": 3,
+        "total": 3,
+        "populated_correct": 3,
+        "populated_total": 3,
+        "accuracy": 1.0,
+        "populated_accuracy": 1.0
+      },
+      "bidder": {
+        "correct": 3,
+        "total": 3,
+        "populated_correct": 3,
+        "populated_total": 3,
+        "accuracy": 1.0,
+        "populated_accuracy": 1.0
+      },
+      "award_amount_raw": {
+        "correct": 3,
+        "total": 3,
+        "populated_correct": 2,
+        "populated_total": 2,
+        "accuracy": 1.0,
+        "populated_accuracy": 1.0
+      },
+      "currency": {
+        "correct": 3,
+        "total": 3,
+        "populated_correct": 2,
+        "populated_total": 2,
+        "accuracy": 1.0,
+        "populated_accuracy": 1.0
+      },
+      "award_date": {
+        "correct": 3,
+        "total": 3,
+        "populated_correct": 3,
+        "populated_total": 3,
+        "accuracy": 1.0,
+        "populated_accuracy": 1.0
+      },
+      "disclosure_date": {
+        "correct": 3,
+        "total": 3,
+        "populated_correct": 3,
+        "populated_total": 3,
+        "accuracy": 1.0,
+        "populated_accuracy": 1.0
+      }
+    },
+    "details": [
+      {
+        "case_id": "01_single",
+        "project": "青岚智慧园区配套工程",
+        "expected_index": 0,
+        "actual_index": 0,
+        "matched": true,
+        "complete": true,
+        "mismatches": []
+      },
+      {
+        "case_id": "02_multi",
+        "project": "北辰综合管廊一期工程",
+        "expected_index": 1,
+        "actual_index": 1,
+        "matched": true,
+        "complete": true,
+        "mismatches": []
+      },
+      {
+        "case_id": "02_multi",
+        "project": "河畔智慧园区配套工程",
+        "expected_index": 2,
+        "actual_index": 2,
+        "matched": true,
+        "complete": true,
+        "mismatches": []
+      }
+    ],
+    "extra_records": [],
+    "method": "Exact one-to-one case_id/project matching; normalized Decimal money and complete dates. Only annotated fields are scored; no LLM judge. Evidence checked separately.",
+    "evidence": {
+      "grounded_fields": 19,
+      "nonempty_fields": 19,
+      "coverage": 1.0,
+      "scope": "逐字引文与PDF坐标核验；不代表事件语义关联已被证明"
+    },
+    "evaluation_scope": "2份合成PDF/3个事件，非真实公告基准，不能推断泛化准确率"
+  },
+  "records": [
+    {
+      "company": "华澄智能工程股份有限公司",
+      "project": "青岚智慧园区配套工程",
+      "bidder": "青岚市公共建设中心",
+      "award_amount_raw": "人民币1,280.50万元",
+      "currency": "人民币",
+      "award_date": "2026年10月10日",
+      "disclosure_date": "2026年10月13日",
+      "case_id": "01_single",
+      "event_id": "event-1",
+      "source_file": "samples/01_single.pdf",
+      "evidence": {
+        "company": {
+          "file": "samples/01_single.pdf",
+          "page": 1,
+          "quote": "华澄智能工程股份有限公司",
+          "start": 82,
+          "end": 94,
+          "bboxes": [
+            [
+              48.0,
+              180.52,
+              192.0,
+              192.52
+            ]
+          ],
+          "verified": true
+        },
+        "project": {
+          "file": "samples/01_single.pdf",
+          "page": 1,
+          "quote": "青岚智慧园区配套工程",
+          "start": 118,
+          "end": 128,
+          "bboxes": [
+            [
+              437.391,
+              180.52,
+              545.391,
+              192.52
+            ],
+            [
+              48.0,
+              205.52,
+              60.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "bidder": {
+          "file": "samples/01_single.pdf",
+          "page": 1,
+          "quote": "青岚市公共建设中心",
+          "start": 133,
+          "end": 142,
+          "bboxes": [
+            [
+              120.0,
+              205.52,
+              228.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "award_amount_raw": {
+          "file": "samples/01_single.pdf",
+          "page": 1,
+          "quote": "人民币1,280.50万元",
+          "start": 148,
+          "end": 161,
+          "bboxes": [
+            [
+              300.0,
+              205.52,
+              406.711,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "currency": {
+          "file": "samples/01_single.pdf",
+          "page": 1,
+          "quote": "人民币",
+          "start": 148,
+          "end": 151,
+          "bboxes": [
+            [
+              300.0,
+              205.52,
+              336.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "award_date": {
+          "file": "samples/01_single.pdf",
+          "page": 1,
+          "quote": "2026年10月10日",
+          "start": 95,
+          "end": 106,
+          "bboxes": [
+            [
+              204.0,
+              180.52,
+              293.391,
+              192.52
+            ]
+          ],
+          "verified": true
+        },
+        "disclosure_date": {
+          "file": "samples/01_single.pdf",
+          "page": 1,
+          "quote": "2026年10月13日",
+          "start": 68,
+          "end": 79,
+          "bboxes": [
+            [
+              108.0,
+              114.52,
+              197.391,
+              126.52
+            ]
+          ],
+          "verified": true
+        }
+      },
+      "evidence_issues": [],
+      "normalized": {
+        "award_amount": {
+          "raw": "人民币1,280.50万元",
+          "value": "12805000",
+          "currency": "CNY",
+          "normalized_unit": "元",
+          "status": "valid",
+          "reason": "十进制金额及单位校验通过"
+        },
+        "award_date": {
+          "raw": "2026年10月10日",
+          "value": "2026-10-10",
+          "status": "valid",
+          "reason": "日期格式及日历校验通过"
+        },
+        "disclosure_date": {
+          "raw": "2026年10月13日",
+          "value": "2026-10-13",
+          "status": "valid",
+          "reason": "日期格式及日历校验通过"
+        }
+      },
+      "validation_status": "valid",
+      "validation_issues": []
+    },
+    {
+      "company": "华澄智能工程股份有限公司",
+      "project": "北辰综合管廊一期工程",
+      "bidder": "北辰市基础设施建设中心",
+      "award_amount_raw": "人民币0.326亿元",
+      "currency": "人民币",
+      "award_date": "2026年10月11日",
+      "disclosure_date": "2026年10月13日",
+      "case_id": "02_multi",
+      "event_id": "event-2",
+      "source_file": "samples/02_multi.pdf",
+      "evidence": {
+        "company": {
+          "file": "samples/02_multi.pdf",
+          "page": 1,
+          "quote": "华澄智能工程股份有限公司",
+          "start": 320,
+          "end": 332,
+          "bboxes": [
+            [
+              48.0,
+              180.52,
+              192.0,
+              192.52
+            ]
+          ],
+          "verified": true
+        },
+        "project": {
+          "file": "samples/02_multi.pdf",
+          "page": 1,
+          "quote": "北辰综合管廊一期工程",
+          "start": 356,
+          "end": 366,
+          "bboxes": [
+            [
+              437.391,
+              180.52,
+              545.391,
+              192.52
+            ],
+            [
+              48.0,
+              205.52,
+              60.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "bidder": {
+          "file": "samples/02_multi.pdf",
+          "page": 1,
+          "quote": "北辰市基础设施建设中心",
+          "start": 371,
+          "end": 382,
+          "bboxes": [
+            [
+              120.0,
+              205.52,
+              252.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "award_amount_raw": {
+          "file": "samples/02_multi.pdf",
+          "page": 1,
+          "quote": "人民币0.326亿元",
+          "start": 388,
+          "end": 398,
+          "bboxes": [
+            [
+              324.0,
+              205.52,
+              414.029,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "currency": {
+          "file": "samples/02_multi.pdf",
+          "page": 1,
+          "quote": "人民币",
+          "start": 388,
+          "end": 391,
+          "bboxes": [
+            [
+              324.0,
+              205.52,
+              360.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "award_date": {
+          "file": "samples/02_multi.pdf",
+          "page": 1,
+          "quote": "2026年10月11日",
+          "start": 333,
+          "end": 344,
+          "bboxes": [
+            [
+              204.0,
+              180.52,
+              293.391,
+              192.52
+            ]
+          ],
+          "verified": true
+        },
+        "disclosure_date": {
+          "file": "samples/02_multi.pdf",
+          "page": 1,
+          "quote": "2026年10月13日",
+          "start": 306,
+          "end": 317,
+          "bboxes": [
+            [
+              108.0,
+              114.52,
+              197.391,
+              126.52
+            ]
+          ],
+          "verified": true
+        }
+      },
+      "evidence_issues": [],
+      "normalized": {
+        "award_amount": {
+          "raw": "人民币0.326亿元",
+          "value": "32600000",
+          "currency": "CNY",
+          "normalized_unit": "元",
+          "status": "valid",
+          "reason": "十进制金额及单位校验通过"
+        },
+        "award_date": {
+          "raw": "2026年10月11日",
+          "value": "2026-10-11",
+          "status": "valid",
+          "reason": "日期格式及日历校验通过"
+        },
+        "disclosure_date": {
+          "raw": "2026年10月13日",
+          "value": "2026-10-13",
+          "status": "valid",
+          "reason": "日期格式及日历校验通过"
+        }
+      },
+      "validation_status": "valid",
+      "validation_issues": []
+    },
+    {
+      "company": "华澄智能工程股份有限公司",
+      "project": "河畔智慧园区配套工程",
+      "bidder": "河畔市园区运营中心",
+      "award_amount_raw": null,
+      "currency": null,
+      "award_date": "2026年10月12日",
+      "disclosure_date": "2026年10月13日",
+      "case_id": "02_multi",
+      "event_id": "event-3",
+      "source_file": "samples/02_multi.pdf",
+      "evidence": {
+        "company": {
+          "file": "samples/02_multi.pdf",
+          "page": 2,
+          "quote": "华澄智能工程股份有限公司",
+          "start": 556,
+          "end": 568,
+          "bboxes": [
+            [
+              48.0,
+              180.52,
+              192.0,
+              192.52
+            ]
+          ],
+          "verified": true
+        },
+        "project": {
+          "file": "samples/02_multi.pdf",
+          "page": 2,
+          "quote": "河畔智慧园区配套工程",
+          "start": 592,
+          "end": 602,
+          "bboxes": [
+            [
+              437.391,
+              180.52,
+              545.391,
+              192.52
+            ],
+            [
+              48.0,
+              205.52,
+              60.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "bidder": {
+          "file": "samples/02_multi.pdf",
+          "page": 2,
+          "quote": "河畔市园区运营中心",
+          "start": 607,
+          "end": 616,
+          "bboxes": [
+            [
+              120.0,
+              205.52,
+              228.0,
+              217.52
+            ]
+          ],
+          "verified": true
+        },
+        "award_date": {
+          "file": "samples/02_multi.pdf",
+          "page": 2,
+          "quote": "2026年10月12日",
+          "start": 569,
+          "end": 580,
+          "bboxes": [
+            [
+              204.0,
+              180.52,
+              293.391,
+              192.52
+            ]
+          ],
+          "verified": true
+        },
+        "disclosure_date": {
+          "file": "samples/02_multi.pdf",
+          "page": 2,
+          "quote": "2026年10月13日",
+          "start": 542,
+          "end": 553,
+          "bboxes": [
+            [
+              108.0,
+              114.52,
+              197.391,
+              126.52
+            ]
+          ],
+          "verified": true
+        }
+      },
+      "evidence_issues": [],
+      "normalized": {
+        "award_amount": {
+          "raw": null,
+          "value": null,
+          "currency": null,
+          "normalized_unit": null,
+          "status": "missing",
+          "reason": "金额未披露"
+        },
+        "award_date": {
+          "raw": "2026年10月12日",
+          "value": "2026-10-12",
+          "status": "valid",
+          "reason": "日期格式及日历校验通过"
+        },
+        "disclosure_date": {
+          "raw": "2026年10月13日",
+          "value": "2026-10-13",
+          "status": "valid",
+          "reason": "日期格式及日历校验通过"
+        }
+      },
+      "validation_status": "needs_review",
+      "validation_issues": [
+        {
+          "field": "award_amount_raw",
+          "reason": "金额未披露"
+        }
+      ]
+    }
+  ]
+}

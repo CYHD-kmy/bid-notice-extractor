@@ -1,0 +1,74 @@
+{
+  "reference_commits": {
+    "langextract": "f6dc772b738a44cd6f77d0858d6ce3afa16acd15",
+    "pdfplumber": "4c64b92d5caccd71c645e98e0fabb0c4dba7ff45",
+    "pdfjs": "e1412d3a540bec075b58c01853e1d85f45f7e841",
+    "PaddleNLP": "3f87dac9b719f75399f92f8bf634ae2ef0611832"
+  },
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "packages": {
+      "langextract": "1.7.1",
+      "pdfplumber": "0.11.10",
+      "reportlab": "4.4.9",
+      "pydantic": "2.13.5",
+      "requests": "2.34.2",
+      "pdfminer.six": "20260107"
+    },
+    "model": {
+      "name": "qwen3-vl:8b",
+      "model": "qwen3-vl:8b",
+      "modified_at": "2026-08-26T16:05:56.365344725+08:00",
+      "size": 6140415879,
+      "digest": "901cae73216286ea8c5aba8b46d307ff7188f737285ec500c795a12f05225d28",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3vl",
+        "families": [
+          "qwen3vl"
+        ],
+        "parameter_size": "8.8B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 4096
+      },
+      "capabilities": [
+        "completion",
+        "vision",
+        "tools",
+        "thinking"
+      ]
+    },
+    "ollama_version": {
+      "version": "0.35.1"
+    },
+    "pdfjs_dist": "6.4.299"
+  },
+  "application_files": {
+    "prototype/evaluate.py": "34e05a61024ae46f8642fd1ec30a7569609866c750114e432829a9562fc71e46",
+    "prototype/make_samples.py": "fe3c0872acb23f7cb46d4122dc322d71be149567b4af3ffa273bb7d3c7abb5e7",
+    "prototype/run_demo.py": "aadc041f778c056446f60fa7c5d6334c1985d338924bf90a3fe6e961b0189866",
+    "prototype/validation.py": "ecd4e0361fb79fd2fd9ebc27eaa36967dcaf64f3839376396522d5266bbcbb71",
+    "prototype/verify_demo.py": "5a842bdd62a9f5caff5e81a1936d609568ae862e033b367f07c8f8d2d7582c76",
+    "prototype/web/app.js": "d0a531f1d9c9bae3d63393946db6f99a137d76d274a76490b3dddaa2e9ab7c14",
+    "prototype/web/index.html": "1fec2295a139a29da6ce52a5275b7422407c3e6ae963ed8103ad60b937b4e87b",
+    "prototype/web/package-lock.json": "ef5d60ea45f0e96829d7a3888166425d8bbba07fa043496c7b1dfc8c8c4dc6f7",
+    "prototype/web/style.css": "d02f39842f885961a07c81ffbf10f2141f0ec2eb316451bc43671398c96fafb2",
+    "requirements.lock.txt": "672ff244920668e87909dcca8b6419a3f8eb1813411df3893db803f6218bfd34"
+  },
+  "local_trial_model_calls": 2,
+  "model_durations_seconds": [
+    71.408,
+    21.984
+  ],
+  "model_currently_unloaded": true,
+  "success": {
+    "events": 3,
+    "annotated_fields_correct": 21,
+    "annotated_fields_total": 21,
+    "nonempty_grounded_fields": 19,
+    "missing_amount_events": 1
+  },
+  "limitation": "仅2份合成PDF；非真实公告评测；参数固定但未验证多次推理稳定性"
+}

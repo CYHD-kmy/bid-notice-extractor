@@ -1,0 +1,8 @@
+{"time": "2026-10-13T06:14:41.376846+00:00", "operation": "file_read", "file": "samples/01_single.pdf", "sha256": "8e23b72e0beced121ee3f6e40511cd30f7c99a836877e93fa6cb963c1e0e47cc", "parser": "pdfplumber"}
+{"time": "2026-10-13T06:14:41.384855+00:00", "operation": "pdf_page_parsed", "file": "01_single.pdf", "page": 1, "characters": 213}
+{"time": "2026-10-13T06:14:41.385059+00:00", "operation": "file_read", "file": "samples/02_multi.pdf", "sha256": "2a143514a1989e1ddd73c586cd888606c0c6ac1573242057b5cc8d48f7b6cc17", "parser": "pdfplumber"}
+{"time": "2026-10-13T06:14:41.390920+00:00", "operation": "pdf_page_parsed", "file": "02_multi.pdf", "page": 1, "characters": 212}
+{"time": "2026-10-13T06:14:41.394322+00:00", "operation": "pdf_page_parsed", "file": "02_multi.pdf", "page": 2, "characters": 211}
+{"time": "2026-10-13T06:14:41.411767+00:00", "operation": "model_call_started", "model": "qwen3-vl:8b", "endpoint": "http://localhost:11434/api/generate", "call": 1, "timeout_seconds": 75, "max_output_tokens": 1400, "keep_alive": 0}
+{"time": "2026-10-13T06:15:52.819741+00:00", "operation": "model_call_finished", "seconds": 71.408, "prompt_tokens": 1025, "output_tokens": 1400, "done_reason": "length"}
+{"time": "2026-10-13T06:15:52.820987+00:00", "operation": "run_failed", "error": "Ollama API error: 输出达到token上限，结果可能截断；已保存原始响应，不自动重试", "model_calls": 1}

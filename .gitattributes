@@ -1,0 +1,17 @@
+# 统一换行符，避免不同平台克隆后出现整文件 diff
+* text=auto eol=lf
+
+# 二进制文件不做换行符转换
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.sqlite binary
+*.node binary
+*.woff binary
+*.woff2 binary
+
+# 第三方源码在 GitHub 上折叠显示，避免统计里误算为本项目代码
+references/** linguist-vendored
+prototype/web/node_modules/** linguist-vendored

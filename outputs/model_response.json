@@ -1,0 +1,14 @@
+{
+  "model": "qwen3-vl:8b",
+  "created_at": "2026-10-13T06:19:11.536798Z",
+  "response": "{\n  \"extractions\": [\n    {\n      \"中标事件\": \"青岚智慧园区配套工程\",\n      \"中标事件_attributes\": {\n        \"company\": \"华澄智能工程股份有限公司\",\n        \"project\": \"青岚智慧园区配套工程\",\n        \"bidder\": \"青岚市公共建设中心\",\n        \"award_amount_raw\": \"人民币1,280.50万元\",\n        \"currency\": \"人民币\",\n        \"award_date\": \"2026年10月10日\",\n        \"disclosure_date\": \"2026年10月13日\"\n      }\n    },\n    {\n      \"中标事件\": \"北辰综合管廊一期工程\",\n      \"中标事件_attributes\": {\n        \"company\": \"华澄智能工程股份有限公司\",\n        \"project\": \"北辰综合管廊一期工程\",\n        \"bidder\": \"北辰市基础设施建设中心\",\n        \"award_amount_raw\": \"人民币0.326亿元\",\n        \"currency\": \"人民币\",\n        \"award_date\": \"2026年10月11日\",\n        \"disclosure_date\": \"2026年10月13日\"\n      }\n    },\n    {\n      \"中标事件\": \"河畔智慧园区配套工程\",\n      \"中标事件_attributes\": {\n        \"company\": \"华澄智能工程股份有限公司\",\n        \"project\": \"河畔智慧园区配套工程\",\n        \"bidder\": \"河畔市园区运营中心\",\n        \"award_amount_raw\": \"\",\n        \"currency\": \"\",\n        \"award_date\": \"2026年10月12日\",\n        \"disclosure_date\": \"2026年10月13日\"\n      }\n    }\n  ]\n}",
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 21973616500,
+  "load_duration": 2827190000,
+  "prompt_eval_count": 1054,
+  "prompt_eval_cached_count": 0,
+  "prompt_eval_duration": 2046017000,
+  "eval_count": 372,
+  "eval_duration": 17079742999
+}

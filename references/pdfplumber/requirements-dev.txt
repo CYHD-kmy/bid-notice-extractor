@@ -1,0 +1,14 @@
+black==26.5.1
+flake8==7.3.0
+isort==8.0.1
+jupyterlab>=4.5.8
+mypy==2.1.0
+nbexec==0.2.0
+pandas-stubs==2.3.3.260113
+pandas==2.3.3
+py==1.11.0
+pytest-cov==6.3.0
+pytest-xdist==3.8.0
+pytest==9.1.0
+setuptools>=82.0.1
+types-Pillow==10.2.0.20240822

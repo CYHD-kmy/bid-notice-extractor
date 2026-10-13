@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>公告抽取核验 · 比赛原型</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><div class="mark">证</div><div><h1>公告抽取核验</h1><p>中标事件结构化提取 · 金额校验 · 原文溯源</p></div><span class="pill">合成样例</span></header>
+  <main>
+    <div class="notice">此演示使用虚构公告。页面只读取已保存的结果，点击和刷新均不调用模型。</div>
+    <section id="summary" class="summary" aria-label="试跑结果"></section>
+    <div class="layout">
+      <section class="panel records-panel"><div class="section-title"><h2>提取的中标事件</h2><span id="run-mode"></span></div><div id="records"></div>
+        <div class="section-title detail-title"><h2>字段与证据</h2><small>点击有来源的字段，定位右侧原文</small></div>
+        <div id="details"></div>
+        <div id="issues"></div>
+      </section>
+      <section class="panel document-panel"><div class="section-title"><h2>原始公告</h2><span id="file-name"></span></div>
+        <div class="toolbar"><button id="prev" aria-label="上一页">←</button><span id="page-number"></span><button id="next" aria-label="下一页">→</button><span class="legend">黄色区域为字段原文</span></div>
+        <div id="pdf-scroll"><div id="paper"><canvas id="pdf"></canvas><div id="highlights"></div></div></div>
+        <p id="evidence-caption" class="caption" aria-live="polite"></p>
+      </section>
+    </div>
+    <footer><span>评测仅覆盖 2 份合成 PDF、3 个事件，不能推断真实公告准确率。</span><div><a href="../../outputs/result.json" target="_blank">结构化结果</a><a href="../../outputs/metrics.json" target="_blank">评测明细</a><a href="../../outputs/trace.jsonl" target="_blank">执行日志</a></div></footer>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "records": [
+    {
+      "case_id": "01_single",
+      "company": "华澄智能工程股份有限公司",
+      "project": "青岚智慧园区配套工程",
+      "bidder": "青岚市公共建设中心",
+      "award_amount_raw": "人民币1,280.50万元",
+      "currency": "人民币",
+      "award_date": "2026年10月10日",
+      "disclosure_date": "2026年10月13日"
+    },
+    {
+      "case_id": "02_multi",
+      "company": "华澄智能工程股份有限公司",
+      "project": "北辰综合管廊一期工程",
+      "bidder": "北辰市基础设施建设中心",
+      "award_amount_raw": "人民币0.326亿元",
+      "currency": "人民币",
+      "award_date": "2026年10月11日",
+      "disclosure_date": "2026年10月13日"
+    },
+    {
+      "case_id": "02_multi",
+      "company": "华澄智能工程股份有限公司",
+      "project": "河畔智慧园区配套工程",
+      "bidder": "河畔市园区运营中心",
+      "award_amount_raw": null,
+      "currency": null,
+      "award_date": "2026年10月12日",
+      "disclosure_date": "2026年10月13日"
+    }
+  ]
+}

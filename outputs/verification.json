@@ -1,0 +1,8 @@
+{
+  "replay_identical": true,
+  "verified_pdf_quotes": 19,
+  "tampered_extraction_rejected": true,
+  "same_text_different_pdf_rejected": true,
+  "missing_budget_range_checks": "passed",
+  "model_calls_for_verification": 0
+}

@@ -1,0 +1,16 @@
+{
+  "model": "qwen3-vl:8b",
+  "model_calls": 1,
+  "source_sha256": "a18408c58385edf96e46999d5f3f3165dba101fdae2607c03c55df92ed54d74e",
+  "extractions_sha256": "16384f079fcc16baf2df870ad89e0621d373080c49722f3c5630fc4b039efb7f",
+  "input_files": [
+    {
+      "file": "samples/01_single.pdf",
+      "sha256": "8e23b72e0beced121ee3f6e40511cd30f7c99a836877e93fa6cb963c1e0e47cc"
+    },
+    {
+      "file": "samples/02_multi.pdf",
+      "sha256": "2a143514a1989e1ddd73c586cd888606c0c6ac1573242057b5cc8d48f7b6cc17"
+    }
+  ]
+}

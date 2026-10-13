@@ -1,0 +1,111 @@
+{
+  "expected_events": 3,
+  "predicted_events": 3,
+  "matched_events": 3,
+  "missed_events": 0,
+  "extra_events": 0,
+  "event_precision": 1.0,
+  "event_recall": 1.0,
+  "event_complete_count": 3,
+  "event_complete_rate": 1.0,
+  "field_accuracy": 1.0,
+  "populated_field_accuracy": 1.0,
+  "missing_rate": 0.0,
+  "extra_rate": 0.0,
+  "fields": {
+    "company": {
+      "correct": 3,
+      "total": 3,
+      "populated_correct": 3,
+      "populated_total": 3,
+      "accuracy": 1.0,
+      "populated_accuracy": 1.0
+    },
+    "project": {
+      "correct": 3,
+      "total": 3,
+      "populated_correct": 3,
+      "populated_total": 3,
+      "accuracy": 1.0,
+      "populated_accuracy": 1.0
+    },
+    "bidder": {
+      "correct": 3,
+      "total": 3,
+      "populated_correct": 3,
+      "populated_total": 3,
+      "accuracy": 1.0,
+      "populated_accuracy": 1.0
+    },
+    "award_amount_raw": {
+      "correct": 3,
+      "total": 3,
+      "populated_correct": 2,
+      "populated_total": 2,
+      "accuracy": 1.0,
+      "populated_accuracy": 1.0
+    },
+    "currency": {
+      "correct": 3,
+      "total": 3,
+      "populated_correct": 2,
+      "populated_total": 2,
+      "accuracy": 1.0,
+      "populated_accuracy": 1.0
+    },
+    "award_date": {
+      "correct": 3,
+      "total": 3,
+      "populated_correct": 3,
+      "populated_total": 3,
+      "accuracy": 1.0,
+      "populated_accuracy": 1.0
+    },
+    "disclosure_date": {
+      "correct": 3,
+      "total": 3,
+      "populated_correct": 3,
+      "populated_total": 3,
+      "accuracy": 1.0,
+      "populated_accuracy": 1.0
+    }
+  },
+  "details": [
+    {
+      "case_id": "01_single",
+      "project": "青岚智慧园区配套工程",
+      "expected_index": 0,
+      "actual_index": 0,
+      "matched": true,
+      "complete": true,
+      "mismatches": []
+    },
+    {
+      "case_id": "02_multi",
+      "project": "北辰综合管廊一期工程",
+      "expected_index": 1,
+      "actual_index": 1,
+      "matched": true,
+      "complete": true,
+      "mismatches": []
+    },
+    {
+      "case_id": "02_multi",
+      "project": "河畔智慧园区配套工程",
+      "expected_index": 2,
+      "actual_index": 2,
+      "matched": true,
+      "complete": true,
+      "mismatches": []
+    }
+  ],
+  "extra_records": [],
+  "method": "Exact one-to-one case_id/project matching; normalized Decimal money and complete dates. Only annotated fields are scored; no LLM judge. Evidence checked separately.",
+  "evidence": {
+    "grounded_fields": 19,
+    "nonempty_fields": 19,
+    "coverage": 1.0,
+    "scope": "逐字引文与PDF坐标核验；不代表事件语义关联已被证明"
+  },
+  "evaluation_scope": "2份合成PDF/3个事件，非真实公告基准，不能推断泛化准确率"
+}
