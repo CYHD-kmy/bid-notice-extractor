@@ -5,3 +5,7 @@ prototype/web/node_modules/
 work/npm-cache/
 work/verification/
 .DS_Store
+
+work/benchmark-inputs/
+work/benchmark-labels/
+work/benchmark-sources.json
