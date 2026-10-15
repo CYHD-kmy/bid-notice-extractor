@@ -1,5 +1,6 @@
 """Local, one-inference announcement demo; replay is the default mode."""
 from __future__ import annotations
+from event_grounding import check_event_associations
 import argparse
 import csv
 import hashlib
@@ -182,7 +183,7 @@ def build_records(doc, source, pages, trace):
                 if not any(label in context for label in ("中标金额", "中标价")):
                     record["evidence_issues"].append({"field": "award_amount_raw", "reason": "金额未紧邻中标金额标签，需核对是否预算"})
         records.append(record)
-    records = validate_records(records)
+    records = validate_records(check_event_associations(records, pages))
     for r in records:
         if r["evidence_issues"]:
             r["validation_status"] = "needs_review"
