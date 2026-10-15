@@ -14,6 +14,7 @@ from langextract.providers.ollama import OllamaLanguageModel
 from langextract.core.tokenizer import UnicodeTokenizer
 from validation import validate_records
 from evaluate import evaluate_records, load_records, FIELDS
+from evaluation_scope import evaluate_inputs
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = "qwen3-vl:8b"
@@ -215,6 +216,8 @@ def main():
     parser.add_argument("--input", nargs="*", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--replay-from", type=Path, default=ROOT / "outputs")
+    parser.add_argument("--expected", type=Path, help="本次输入的人工标签；默认仅评测指纹匹配的内置样例")
+    parser.add_argument("--evaluation-manifest", type=Path, help="输入与标签SHA256清单")
     args = parser.parse_args()
     paths = args.input or sorted((ROOT / "samples").glob("*.pdf"))
     if not 1 <= len(paths) <= 2:
@@ -264,19 +267,20 @@ def main():
             doc = next(iter(lx.io.load_annotated_documents_jsonl(str(args.replay_from / "extractions.jsonl"))))
         records = build_records(doc, source, pages, trace)
         # Gold labels are read only after inference and validation.
-        metrics = evaluate_records(load_records(ROOT / "samples" / "expected.json"), records)
+        metrics = evaluate_inputs(records, paths, ROOT, args.expected, args.evaluation_manifest)
         nonempty = [(r, k) for r in records for k in FIELDS if r.get(k) is not None]
         grounded = sum(k in r["evidence"] for r, k in nonempty)
         metrics["evidence"] = {"grounded_fields": grounded, "nonempty_fields": len(nonempty),
                                "coverage": grounded / len(nonempty) if nonempty else None,
                                "scope": "逐字引文与PDF坐标核验；不代表事件语义关联已被证明"}
-        metrics["evaluation_scope"] = "2份合成PDF/3个事件，非真实公告基准，不能推断泛化准确率"
-        trace.log("evaluation", gold_sha256=digest(ROOT / "samples" / "expected.json"), field_accuracy=metrics["field_accuracy"])
+        trace.log("evaluation", evaluated=metrics["evaluated"], gold_sha256=metrics.get("labels_sha256"),
+                  field_accuracy=metrics["field_accuracy"], scope=metrics["evaluation_scope"])
         write_json(out / "metrics.json", metrics)
         result = {"run_id": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f"),
                   "meta": {"mode": args.mode, "model": origin["model"], "model_calls_this_run": model.calls if model else 0,
                            "original_live_calls": origin["model_calls"], "elapsed_seconds": round(time.monotonic() - start, 3),
-                           "source_sha256": source_hash, "synthetic_data": True},
+                           "source_sha256": source_hash,
+                           "synthetic_data": {"synthetic": True, "real": False}.get(metrics["data_kind"])},
                   "metrics": metrics, "records": records}
         persist(out, result, trace)
         print(json.dumps({"mode": args.mode, "model_calls": result["meta"]["model_calls_this_run"],
