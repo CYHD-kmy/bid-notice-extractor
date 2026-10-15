@@ -13,6 +13,7 @@ import unicodedata
 
 
 _MISSING = {"", "null", "none", "n/a", "na", "未披露", "不适用", "未知", "-", "—", "--"}
+_UNDISCLOSED = {"未披露", "尚未确定", "暂未确定", "待定", "未知"}
 _CURRENCY_ALIASES = {
     "人民币": "CNY", "rmb": "CNY", "cny": "CNY", "元": "CNY", "¥": "CNY",
     "￥": "CNY", "美元": "USD", "usd": "USD", "us$": "USD",
@@ -49,21 +50,23 @@ def normalize_amount(raw, currency=None) -> dict:
     result = {
         "raw": raw, "value": None, "currency": currency_code,
         "normalized_unit": _CURRENCY_NAMES.get(currency_code),
-        "status": "needs_review", "reason": "",
+        "status": "needs_review", "reason": "", "missing_reason": None, "tax_basis": None,
     }
     text = _text(raw)
-    if text.lower() in _MISSING:
-        result.update(status="missing", reason="金额未披露")
+    if text.lower() in _MISSING or text in _UNDISCLOSED:
+        reason = 'not_applicable' if text == '不适用' else ('not_disclosed' if text in _UNDISCLOSED else 'not_extracted')
+        result.update(status="missing", reason={"not_applicable": "金额不适用", "not_disclosed": "原文未披露或未确定金额",
+                                                "not_extracted": "未取得金额，不能据此判断原文未披露"}[reason], missing_reason=reason)
         return result
     if isinstance(raw, bool):
         result["reason"] = "金额不能是布尔值"
         return result
-    if re.search(r"预算|合计|汇总|总计|累计|总投资|最高限价|项目总额", text):
+    if re.search(r"预算|合计|汇总|总计|累计|总投资|最高限价|项目总额|合同金额|联合体总额", text):
         result["reason"] = "金额含预算或合计口径，不能自动作为单个项目中标金额"
         return result
 
     approximate = bool(re.search(r"约|大约|近|左右|预计|估计", text))
-    text = re.sub(r"^(?:中标金额|中标价|中标价格|金额)\s*[:：]?\s*", "", text)
+    text = re.sub(r"^(?:中标金额|中标价格|中标价|成交金额|成交价|金额)\s*[:：]?\s*", "", text)
     text = re.sub(r"^(?:大约|约|近|预计|估计)\s*", "", text)
     text = re.sub(r"\s*左右$", "", text)
     text = re.sub(r"\s+", "", text)
@@ -100,6 +103,7 @@ def normalize_amount(raw, currency=None) -> dict:
     result.update(
         value=_decimal_string(amount), currency=resolved_currency,
         normalized_unit=_CURRENCY_NAMES[resolved_currency],
+        tax_basis={"(含税)": "tax_inclusive", "(不含税)": "tax_exclusive"}.get(match["tax"]),
         status="needs_review" if approximate else "valid",
         reason="近似金额，需人工确认精度" if approximate else "十进制金额及单位校验通过",
     )
@@ -155,8 +159,9 @@ def validate_records(records: list[dict]) -> list[dict]:
         if amount["status"] != "valid":
             issues.append({"field": "award_amount_raw", "reason": amount["reason"]})
         amount_type = _text(record.get("award_amount_type", ""))
-        if re.search(r"预算|合计|汇总|总计|累计|budget|aggregate|total", amount_type, re.IGNORECASE):
+        if amount_type and amount_type not in {"中标金额", "中标价", "中标价格", "成交金额", "成交价", "award", "award_amount"}:
             amount.update(value=None, status="needs_review", reason="字段口径为预算或合计，不属于单个项目中标金额")
+            amount["reason"] = "金额标签不是明确的中标或成交口径，需核对合同、预算或联合体范围"
             issues.append({"field": "award_amount_type", "reason": amount["reason"]})
         for field in ("award_date", "disclosure_date"):
             if normalized[field]["status"] == "needs_review":
