@@ -16,6 +16,20 @@
         <div class="section-title detail-title"><h2>字段与证据</h2><small>点击有来源的字段，定位右侧原文</small></div>
         <div id="details"></div>
         <div id="issues"></div>
+        <section id="review-panel" class="notice" aria-label="人工复核">
+          <h3>人工复核</h3>
+          <p>复核保存在当前浏览器，导出后可交给团队。原始结果和自动评测不会被覆盖。</p>
+          <form id="review-form">
+            <p><label>字段 <select id="review-field"></select></label></p>
+            <p><label>处理 <select id="review-action"><option value="confirmed">确认原值</option><option value="corrected">提出修改</option><option value="unresolved">仍需复核</option></select></label></p>
+            <p><label>建议值 <input id="review-value"></label></p>
+            <p><label>复核人 <input id="reviewer" required></label></p>
+            <p><label>依据或疑点 <textarea id="review-note" rows="2"></textarea></label></p>
+            <button type="submit">保存复核记录</button>
+          </form>
+          <p id="review-status" aria-live="polite"></p><div id="review-history"></div>
+          <button id="export-review" type="button">导出结果及复核日志</button>
+        </section>
       </section>
       <section class="panel document-panel"><div class="section-title"><h2>原始公告</h2><span id="file-name"></span></div>
         <div class="toolbar"><button id="prev" aria-label="上一页">←</button><span id="page-number"></span><button id="next" aria-label="下一页">→</button><span class="legend">黄色区域为字段原文</span></div>
