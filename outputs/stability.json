@@ -1,0 +1,367 @@
+{
+  "runs": 3,
+  "mode": "replay",
+  "model_calls_per_run": 0,
+  "file_consistency": {
+    "calculations.jsonl": {
+      "runs_present": 3,
+      "identical": true,
+      "distinct_hashes": 1,
+      "sha256": "d8da328870743fed6146c70d76a8afb3e85b16c9e5803c57e31a5d41146c5908",
+      "comparison": "逐字节"
+    },
+    "assertions.jsonl": {
+      "runs_present": 3,
+      "identical": true,
+      "distinct_hashes": 1,
+      "sha256": "268148baaf0357b2d48e8362609b82b111ff7253bdec839b4f9740b0ea358461",
+      "comparison": "逐字节"
+    },
+    "results.csv": {
+      "runs_present": 3,
+      "identical": true,
+      "distinct_hashes": 1,
+      "sha256": "018628c143ca4a72f919fdf282aa450438e8461919bc048d2e1b2fdec0e5dad7",
+      "comparison": "逐字节"
+    },
+    "registry.json": {
+      "runs_present": 3,
+      "identical": true,
+      "distinct_hashes": 1,
+      "sha256": "815fb9f27a9fb2bf741cfeb754a4bf0e8677c918260909a39b7b3e8f35f00945",
+      "comparison": "逐字节"
+    },
+    "report.md": {
+      "runs_present": 3,
+      "identical": true,
+      "distinct_hashes": 1,
+      "sha256": "ef2c1a6b1dfd4e2b26fa3e0eafe198ed204dbb12bbdf97fdbc92ec6de2b8373d",
+      "comparison": "剥离 run_id 与生成时间后逐字节"
+    },
+    "report.json": {
+      "runs_present": 3,
+      "identical": true,
+      "distinct_hashes": 1,
+      "sha256": "f7512c4e5de09d1aa68f55bf6653ce2df6cade5fa375f51f40f3f4fde3524c9f",
+      "comparison": "剥离 run_id 与生成时间后逐字节"
+    }
+  },
+  "metric_consistency": {
+    "calc.self_consistent_rate": {
+      "values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "identical": true
+    },
+    "calc.failures": {
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "identical": true
+    },
+    "evidence.verified_rate": {
+      "values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "identical": true
+    },
+    "evidence.fact_assertions": {
+      "values": [
+        17,
+        17,
+        17
+      ],
+      "identical": true
+    },
+    "report.sections_present": {
+      "values": [
+        7,
+        7,
+        7
+      ],
+      "identical": true
+    },
+    "report.has_all_three_kinds": {
+      "values": [
+        true,
+        true,
+        true
+      ],
+      "identical": true
+    },
+    "report.fact": {
+      "values": [
+        17,
+        17,
+        17
+      ],
+      "identical": true
+    },
+    "report.inference": {
+      "values": [
+        2,
+        2,
+        2
+      ],
+      "identical": true
+    }
+  },
+  "all_files_identical": true,
+  "all_metrics_identical": true,
+  "deterministic": true,
+  "compared_artifacts": [
+    "calculations.jsonl",
+    "assertions.jsonl",
+    "results.csv",
+    "registry.json"
+  ],
+  "normalized_compared_artifacts": [
+    "report.md",
+    "report.json"
+  ],
+  "excluded_artifacts": [
+    "result.json",
+    "trace.jsonl",
+    "source.json"
+  ],
+  "exclusion_reason": "result.json 含 run_id 与时间戳、trace.jsonl 含时间戳、source.json 体积大且不随运行变化 —— 均不参与比对；report.md/report.json 剥离 run_id 与生成时间后再比对",
+  "scope": "本指标为【回放确定性】：0 次模型调用、处理链路无随机源。本原型仅成功录制 1 次真实推理，因此【不能】据此推断模型稳定性。",
+  "per_run": [
+    {
+      "run": 1,
+      "dir": "tests/_out/stability/run01",
+      "hashes": {
+        "calculations.jsonl": "d8da328870743fed6146c70d76a8afb3e85b16c9e5803c57e31a5d41146c5908",
+        "assertions.jsonl": "268148baaf0357b2d48e8362609b82b111ff7253bdec839b4f9740b0ea358461",
+        "results.csv": "018628c143ca4a72f919fdf282aa450438e8461919bc048d2e1b2fdec0e5dad7",
+        "registry.json": "815fb9f27a9fb2bf741cfeb754a4bf0e8677c918260909a39b7b3e8f35f00945"
+      },
+      "normalized_hashes": {
+        "report.md": "ef2c1a6b1dfd4e2b26fa3e0eafe198ed204dbb12bbdf97fdbc92ec6de2b8373d",
+        "report.json": "f7512c4e5de09d1aa68f55bf6653ce2df6cade5fa375f51f40f3f4fde3524c9f"
+      },
+      "counts": {
+        "records": 3,
+        "calculations": 6,
+        "calculations_valid": 6,
+        "calculations_blocked": 0,
+        "assertions": 21,
+        "assertions_rejected": 0,
+        "tables": 0,
+        "issues": 3
+      }
+    },
+    {
+      "run": 2,
+      "dir": "tests/_out/stability/run02",
+      "hashes": {
+        "calculations.jsonl": "d8da328870743fed6146c70d76a8afb3e85b16c9e5803c57e31a5d41146c5908",
+        "assertions.jsonl": "268148baaf0357b2d48e8362609b82b111ff7253bdec839b4f9740b0ea358461",
+        "results.csv": "018628c143ca4a72f919fdf282aa450438e8461919bc048d2e1b2fdec0e5dad7",
+        "registry.json": "815fb9f27a9fb2bf741cfeb754a4bf0e8677c918260909a39b7b3e8f35f00945"
+      },
+      "normalized_hashes": {
+        "report.md": "ef2c1a6b1dfd4e2b26fa3e0eafe198ed204dbb12bbdf97fdbc92ec6de2b8373d",
+        "report.json": "f7512c4e5de09d1aa68f55bf6653ce2df6cade5fa375f51f40f3f4fde3524c9f"
+      },
+      "counts": {
+        "records": 3,
+        "calculations": 6,
+        "calculations_valid": 6,
+        "calculations_blocked": 0,
+        "assertions": 21,
+        "assertions_rejected": 0,
+        "tables": 0,
+        "issues": 3
+      }
+    },
+    {
+      "run": 3,
+      "dir": "tests/_out/stability/run03",
+      "hashes": {
+        "calculations.jsonl": "d8da328870743fed6146c70d76a8afb3e85b16c9e5803c57e31a5d41146c5908",
+        "assertions.jsonl": "268148baaf0357b2d48e8362609b82b111ff7253bdec839b4f9740b0ea358461",
+        "results.csv": "018628c143ca4a72f919fdf282aa450438e8461919bc048d2e1b2fdec0e5dad7",
+        "registry.json": "815fb9f27a9fb2bf741cfeb754a4bf0e8677c918260909a39b7b3e8f35f00945"
+      },
+      "normalized_hashes": {
+        "report.md": "ef2c1a6b1dfd4e2b26fa3e0eafe198ed204dbb12bbdf97fdbc92ec6de2b8373d",
+        "report.json": "f7512c4e5de09d1aa68f55bf6653ce2df6cade5fa375f51f40f3f4fde3524c9f"
+      },
+      "counts": {
+        "records": 3,
+        "calculations": 6,
+        "calculations_valid": 6,
+        "calculations_blocked": 0,
+        "assertions": 21,
+        "assertions_rejected": 0,
+        "tables": 0,
+        "issues": 3
+      }
+    }
+  ],
+  "per_run_metrics": [
+    {
+      "output": "run01",
+      "calculations": {
+        "total": 6,
+        "checked": 6,
+        "failures": 0,
+        "self_consistent_rate": 1.0,
+        "by_op": {
+          "unit_convert": 4,
+          "ratio": 2
+        },
+        "failure_detail": [],
+        "scope": "仅校验算术自洽性（能否由操作数重算），不校验业务口径是否正确"
+      },
+      "evidence": {
+        "fact_assertions": 17,
+        "evidence_checked": 17,
+        "evidence_failures": 0,
+        "verified_rate": 1.0,
+        "facts_without_verified_evidence": [],
+        "failure_detail": [],
+        "scope": "校验逐字引文能否按偏移从页面文本层取回；不校验语义归属是否正确"
+      },
+      "report": {
+        "sections_required": 7,
+        "sections_present": 7,
+        "sections_missing": [],
+        "assertion_kinds_present": [
+          "fact",
+          "inference",
+          "opinion"
+        ],
+        "has_all_three_kinds": true,
+        "fact": 17,
+        "inference": 2,
+        "opinion": 2,
+        "rejected": 0,
+        "evidence_verified": 21,
+        "md_chars": 8309,
+        "scope": "校验七节齐全与三类断言均被标注；不评价文字质量"
+      },
+      "counts": {
+        "records": 3,
+        "calculations": 6,
+        "calculations_valid": 6,
+        "calculations_blocked": 0,
+        "assertions": 21,
+        "assertions_rejected": 0,
+        "tables": 0,
+        "issues": 3
+      }
+    },
+    {
+      "output": "run02",
+      "calculations": {
+        "total": 6,
+        "checked": 6,
+        "failures": 0,
+        "self_consistent_rate": 1.0,
+        "by_op": {
+          "unit_convert": 4,
+          "ratio": 2
+        },
+        "failure_detail": [],
+        "scope": "仅校验算术自洽性（能否由操作数重算），不校验业务口径是否正确"
+      },
+      "evidence": {
+        "fact_assertions": 17,
+        "evidence_checked": 17,
+        "evidence_failures": 0,
+        "verified_rate": 1.0,
+        "facts_without_verified_evidence": [],
+        "failure_detail": [],
+        "scope": "校验逐字引文能否按偏移从页面文本层取回；不校验语义归属是否正确"
+      },
+      "report": {
+        "sections_required": 7,
+        "sections_present": 7,
+        "sections_missing": [],
+        "assertion_kinds_present": [
+          "fact",
+          "inference",
+          "opinion"
+        ],
+        "has_all_three_kinds": true,
+        "fact": 17,
+        "inference": 2,
+        "opinion": 2,
+        "rejected": 0,
+        "evidence_verified": 21,
+        "md_chars": 8309,
+        "scope": "校验七节齐全与三类断言均被标注；不评价文字质量"
+      },
+      "counts": {
+        "records": 3,
+        "calculations": 6,
+        "calculations_valid": 6,
+        "calculations_blocked": 0,
+        "assertions": 21,
+        "assertions_rejected": 0,
+        "tables": 0,
+        "issues": 3
+      }
+    },
+    {
+      "output": "run03",
+      "calculations": {
+        "total": 6,
+        "checked": 6,
+        "failures": 0,
+        "self_consistent_rate": 1.0,
+        "by_op": {
+          "unit_convert": 4,
+          "ratio": 2
+        },
+        "failure_detail": [],
+        "scope": "仅校验算术自洽性（能否由操作数重算），不校验业务口径是否正确"
+      },
+      "evidence": {
+        "fact_assertions": 17,
+        "evidence_checked": 17,
+        "evidence_failures": 0,
+        "verified_rate": 1.0,
+        "facts_without_verified_evidence": [],
+        "failure_detail": [],
+        "scope": "校验逐字引文能否按偏移从页面文本层取回；不校验语义归属是否正确"
+      },
+      "report": {
+        "sections_required": 7,
+        "sections_present": 7,
+        "sections_missing": [],
+        "assertion_kinds_present": [
+          "fact",
+          "inference",
+          "opinion"
+        ],
+        "has_all_three_kinds": true,
+        "fact": 17,
+        "inference": 2,
+        "opinion": 2,
+        "rejected": 0,
+        "evidence_verified": 21,
+        "md_chars": 8309,
+        "scope": "校验七节齐全与三类断言均被标注；不评价文字质量"
+      },
+      "counts": {
+        "records": 3,
+        "calculations": 6,
+        "calculations_valid": 6,
+        "calculations_blocked": 0,
+        "assertions": 21,
+        "assertions_rejected": 0,
+        "tables": 0,
+        "issues": 3
+      }
+    }
+  ]
+}
