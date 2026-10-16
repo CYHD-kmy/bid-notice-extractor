@@ -5,3 +5,4 @@ prototype/web/node_modules/
 work/npm-cache/
 work/verification/
 .DS_Store
+tests/_out/

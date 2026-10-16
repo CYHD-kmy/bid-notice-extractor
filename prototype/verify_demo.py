@@ -9,11 +9,11 @@ from validation import normalize_amount, normalize_date
 ROOT = Path(__file__).resolve().parents[1]
 
 def main():
-    live = json.loads((ROOT / "outputs/result.json").read_text())
-    replay = json.loads((ROOT / "outputs/replay/result.json").read_text())
+    live = json.loads((ROOT / "outputs/result.json").read_text(encoding="utf-8"))
+    replay = json.loads((ROOT / "outputs/replay/result.json").read_text(encoding="utf-8"))
     assert live["records"] == replay["records"]
     assert replay["meta"]["model_calls_this_run"] == 0
-    source = json.loads((ROOT / "outputs/source.json").read_text())
+    source = json.loads((ROOT / "outputs/source.json").read_text(encoding="utf-8"))
     pages = {(p["file"], p["page"]): p for p in source["pages"]}
     proofs = 0
     for record in live["records"]:
@@ -34,13 +34,13 @@ def main():
 
     work = ROOT / "work/verification"
     work.mkdir(parents=True, exist_ok=True)
-    origin = json.loads((ROOT / "outputs/origin.json").read_text())
+    origin = json.loads((ROOT / "outputs/origin.json").read_text(encoding="utf-8"))
     tampered = work / "tampered-recording"
     tampered.mkdir(exist_ok=True)
     shutil.copyfile(ROOT / "outputs/extractions.jsonl", tampered / "extractions.jsonl")
     with (tampered / "extractions.jsonl").open("a") as f:
         f.write("\n")
-    (tampered / "origin.json").write_text(json.dumps(origin))
+    (tampered / "origin.json").write_text(json.dumps(origin), encoding="utf-8")
     commands = [(["--replay-from", str(tampered), "--output", str(work / "rejected-extractions")], "录制提取文件哈希不一致")]
 
     # Append harmless bytes after the PDF EOF: parsed text is unchanged, but
@@ -52,24 +52,25 @@ def main():
         target = copy_dir / Path(item["file"]).name
         shutil.copyfile(ROOT / item["file"], target)
         copied.append(target)
-        item["file"] = str(target.relative_to(ROOT))
+        item["file"] = target.relative_to(ROOT).as_posix()
     with copied[0].open("ab") as f:
         f.write(b"\n% tampered layout provenance fixture\n")
     pdf_origin = work / "binary-recording"
     pdf_origin.mkdir(exist_ok=True)
     shutil.copyfile(ROOT / "outputs/extractions.jsonl", pdf_origin / "extractions.jsonl")
-    (pdf_origin / "origin.json").write_text(json.dumps(origin))
+    (pdf_origin / "origin.json").write_text(json.dumps(origin), encoding="utf-8")
     commands.append((["--replay-from", str(pdf_origin), "--output", str(work / "rejected-binary"),
                       "--input", *(str(p) for p in copied)], "PDF文件列表或二进制哈希与录制时不同"))
     for options, reason in commands:
         result = subprocess.run([sys.executable, str(ROOT / "prototype/run_demo.py"), "--mode", "replay", *options],
-                                text=True, capture_output=True, timeout=10)
+                                text=True, capture_output=True, timeout=10,
+                                encoding="utf-8", errors="replace")
         assert result.returncode != 0 and reason in result.stderr, result.stderr
 
     report = {"replay_identical": True, "verified_pdf_quotes": proofs, "tampered_extraction_rejected": True,
               "same_text_different_pdf_rejected": True, "missing_budget_range_checks": "passed",
               "model_calls_for_verification": 0}
-    (ROOT / "outputs/verification.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    (ROOT / "outputs/verification.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False))
 
 if __name__ == "__main__":

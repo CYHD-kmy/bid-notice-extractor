@@ -61,7 +61,7 @@ class Trace:
 def parse_pdfs(paths, trace):
     source, pages = "", []
     for path in paths:
-        trace.log("file_read", file=str(path.relative_to(ROOT)), sha256=digest(path), parser="pdfplumber")
+        trace.log("file_read", file=path.relative_to(ROOT).as_posix(), sha256=digest(path), parser="pdfplumber")
         with pdfplumber.open(path) as pdf:
             for number, page in enumerate(pdf.pages, 1):
                 source += f"\n[文件：{path.name}；页码：{number}]\n"
@@ -77,7 +77,7 @@ def parse_pdfs(paths, trace):
                 if not text.strip():
                     raise ValueError(f"{path.name} 第 {number} 页没有文本层；本原型未接入 OCR")
                 source += text
-                pages.append({"file": str(path.relative_to(ROOT)), "case_id": path.stem, "page": number,
+                pages.append({"file": path.relative_to(ROOT).as_posix(), "case_id": path.stem, "page": number,
                               "width": page.width, "height": page.height, "start": start, "end": len(source),
                               "text": text, "chars": chars})
                 trace.log("pdf_page_parsed", file=path.name, page=number, characters=len(text))
@@ -216,9 +216,21 @@ def main():
     parser.add_argument("--output", type=Path)
     parser.add_argument("--replay-from", type=Path, default=ROOT / "outputs")
     args = parser.parse_args()
-    paths = args.input or sorted((ROOT / "samples").glob("*.pdf"))
+    if args.input:
+        paths = list(args.input)
+    else:
+        samples_dir = ROOT / "samples"
+        paths = sorted(samples_dir.glob("*.pdf"))
+        if not 1 <= len(paths) <= 2:
+            found = "、".join(p.name for p in paths) or "（无）"
+            hint = ("默认回放使用 samples/ 下的全部 PDF，而录制结果只对应当初那 2 份；"
+                    "新增样本请放到其他目录，或用 --input 显式指定要回放的文件")
+            parser.error(
+                f"samples/ 下有 {len(paths)} 份 PDF，超出本机轻量试跑上限（1至2份）：{found}\n"
+                f"  {hint}"
+            )
     if not 1 <= len(paths) <= 2:
-        parser.error("本机轻量试跑限制为1至2份PDF")
+        parser.error(f"本机轻量试跑限制为1至2份PDF，实际收到 {len(paths)} 份，请用 --input 明确指定")
     paths = [p.resolve() for p in paths]
     for p in paths:
         if not p.is_relative_to(ROOT):
@@ -249,13 +261,13 @@ def main():
             lx.io.save_annotated_documents([doc], output_name="extractions.jsonl", output_dir=str(out))
             origin = {"model": MODEL, "model_calls": model.calls, "source_sha256": source_hash,
                       "extractions_sha256": digest(out / "extractions.jsonl"),
-                      "input_files": [{"file": str(p.relative_to(ROOT)), "sha256": digest(p)} for p in paths]}
+                      "input_files": [{"file": p.relative_to(ROOT).as_posix(), "sha256": digest(p)} for p in paths]}
             write_json(out / "origin.json", origin)
         else:
             origin = json.loads((args.replay_from / "origin.json").read_text(encoding="utf-8"))
             if origin["source_sha256"] != source_hash:
                 raise ValueError("输入与录制时不同，拒绝将历史模型输出当作本次提取结果")
-            if origin["input_files"] != [{"file": str(p.relative_to(ROOT)), "sha256": digest(p)} for p in paths]:
+            if origin["input_files"] != [{"file": p.relative_to(ROOT).as_posix(), "sha256": digest(p)} for p in paths]:
                 raise ValueError("PDF文件列表或二进制哈希与录制时不同")
             if origin["extractions_sha256"] != digest(args.replay_from / "extractions.jsonl"):
                 raise ValueError("录制提取文件哈希不一致")
