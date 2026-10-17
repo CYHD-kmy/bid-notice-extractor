@@ -1,10 +1,12 @@
 import * as pdfjs from './node_modules/pdfjs-dist/build/pdf.mjs';
 import {projectPath,resultPath,percentage} from './result-path.mjs';
+import {reviewKey,makeReview,exportReview} from './review-log.mjs';
 pdfjs.GlobalWorkerOptions.workerSrc = './node_modules/pdfjs-dist/build/pdf.worker.mjs';
 const labels = {company:'中标公司',project:'项目名称',bidder:'招标方',award_amount_raw:'中标金额原文',currency:'币种',award_date:'中标日期',disclosure_date:'披露日期'};
 const el = id => document.getElementById(id);
 let result, selected, proof, documentPdf, pageNumber=1, scale=1, serial=0, selectionSerial=0;
 const pdfCache = new Map();
+let reviewEntries=[];
 function node(tag, cls, text) { const n=document.createElement(tag); if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n; }
 function money(record) { const amount=record.normalized.award_amount;return amount.value===null?(amount.status==='missing'?'未取得金额':'金额待复核'):`${amount.value} ${amount.normalized_unit}`; }
 function renderRecords() {
@@ -28,6 +30,7 @@ async function selectRecord(record) {
     button.onclick=()=>showEvidence(evidence,field);el('details').append(button);
   }
   for(const issue of record.validation_issues)el('issues').append(node('div','issue',`${labels[issue.field]||issue.field}：${issue.reason}`));
+  renderReviewHistory();syncReviewValue();
   const first=record.evidence.project||Object.values(record.evidence)[0];
   if(first)await showEvidence(first,'project');
   else {selectionSerial++;serial++;proof=null;documentPdf=null;el('highlights').replaceChildren();el('pdf').getContext('2d').clearRect(0,0,el('pdf').width,el('pdf').height);el('file-name').textContent='';el('page-number').textContent='';el('prev').disabled=true;el('next').disabled=true;el('evidence-caption').textContent='该事件没有可验证的原文定位，请人工复核。';}
@@ -70,6 +73,26 @@ async function renderPage() {
 }
 el('prev').onclick=async()=>{if(pageNumber>1){pageNumber--;await renderPage();}};
 el('next').onclick=async()=>{if(documentPdf&&pageNumber<documentPdf.numPages){pageNumber++;await renderPage();}};
+function syncReviewValue(){el('review-value').value=selected?.[el('review-field').value]??'';}
+function renderReviewHistory(){
+  el('review-history').replaceChildren();
+  for(const entry of reviewEntries.filter(e=>e.event_id===selected?.event_id))el('review-history').append(node('p','',`${labels[entry.field]} · ${{confirmed:'确认原值',corrected:'提出修改',unresolved:'仍需复核'}[entry.action]} · ${entry.proposed_value??'空值'} · ${entry.reviewer} · ${entry.note}`));
+}
+for(const [field,label] of Object.entries(labels)){const option=node('option','',label);option.value=field;el('review-field').append(option);}
+el('review-field').onchange=syncReviewValue;
+el('review-form').onsubmit=event=>{
+  event.preventDefault();try{
+    if(!selected)throw new Error('请先选择事件');
+    const entry=makeReview(result,selected,el('review-field').value,el('review-action').value,el('review-value').value,el('reviewer').value,el('review-note').value);
+    const next=[...reviewEntries,entry];localStorage.setItem(reviewKey(result),JSON.stringify(next));reviewEntries=next;
+    renderReviewHistory();el('review-status').textContent='已保存。人工记录未改写自动提取结果，请导出备份。';
+  }catch(error){el('review-status').textContent=`保存失败：${error.message}`;}
+};
+el('export-review').onclick=()=>{try{
+  if(!result)throw new Error('尚未载入结果');
+  const blob=new Blob([JSON.stringify(exportReview(result,reviewEntries),null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const link=node('a');link.href=url;link.download='review-log.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}catch(error){el('review-status').textContent=error.message;}};
 el('result-form').onsubmit=event=>{event.preventDefault();try{resultPath(el('result-path').value);const url=new URL(location.href);url.searchParams.set('result',el('result-path').value);location.href=url.href;}catch(error){el('records').replaceChildren(node('div','error',error.message));}};
 try {
   const requested=new URLSearchParams(location.search).get('result')||'outputs/result.json';
@@ -77,6 +100,7 @@ try {
   const response=await fetch(`../../${path}`);if(!response.ok)throw new Error(`无法读取 ${requested}，请确认任务已完成且文件存在`);
   result=await response.json();
   if(!Array.isArray(result.records)||!result.meta||!result.metrics)throw new Error('结果格式不正确');
+  try{const saved=JSON.parse(localStorage.getItem(reviewKey(result))||'[]');reviewEntries=Array.isArray(saved)?saved.filter(e=>e.run_id===result.run_id&&e.source_sha256===result.meta.source_sha256):[];}catch(error){el('review-status').textContent=`无法读取本地复核记录：${error.message}`;}
   const directory=path.slice(0,-'result.json'.length);
   for(const [id,file] of [['result-link','result.json'],['metrics-link','metrics.json'],['trace-link','trace.jsonl']])el(id).href=`../../${directory}${file}`;
   el('data-kind').textContent=result.meta.synthetic_data===true?'合成数据':result.meta.synthetic_data===false?'标注声明为真实数据':'数据类别未确认';
