@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "annotation_status": "initial_source_checked_pending_independent_review",
+  "scope": "2份真实公告的初始标注，不是独立测试集，未进行模型效果评测",
+  "cases": [
+    {
+      "case_id": "opte-20260114",
+      "url": "https://static.cninfo.com.cn/finalpage/2026-01-14/1224931547.PDF",
+      "sha256": "721d8b3b4e3262f79145392127b1504c340f3f7ac669f1d7f8b69c674338a610",
+      "date_policy": "disclosure_date取公告落款日期，不以下载日期代替",
+      "evidence_pages": {
+        "company": [
+          1,
+          2
+        ],
+        "project": [
+          1
+        ],
+        "bidder": [
+          1
+        ],
+        "award_amount_raw": [
+          1
+        ],
+        "disclosure_date": [
+          2
+        ]
+      },
+      "records": [
+        {
+          "case_id": "opte-20260114",
+          "company": "广东奥普特科技股份有限公司",
+          "project": "2026年度2D视觉方案招标项目",
+          "bidder": "歌尔股份有限公司",
+          "award_amount_raw": "人民币12,000.00万元",
+          "currency": "人民币",
+          "award_date": null,
+          "disclosure_date": "2026年1月14日"
+        }
+      ]
+    },
+    {
+      "case_id": "wiscom-20260808",
+      "url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-08-08/e9c27fa7-43ac-4ad4-8075-3b08c47098b2.PDF",
+      "sha256": "0026892d26f2595852e9468deb1ff533803680c6c9b1a3a4cc888227676cbe47",
+      "date_policy": "disclosure_date取落款2026-08-07，来源URL日期为2026-08-08，两者需区分",
+      "evidence_pages": {
+        "company": [
+          1
+        ],
+        "project": [
+          1
+        ],
+        "award_amount_raw": [
+          1
+        ],
+        "disclosure_date": [
+          2
+        ]
+      },
+      "notes": "币种只标原文的元，不补写人民币；现有元至CNY口径需团队复核。交易对手方未直接标为招标方，bidder不评分。第二项目金额有三年续签条件，不等同当期收入。",
+      "records": [
+        {
+          "case_id": "wiscom-20260808",
+          "company": "江苏金智科技股份有限公司",
+          "project": "国网上海市电力公司2026年电网工程物资第二次框架协议（协议库存）公开招标采购",
+          "award_amount_raw": "1,608.50万元",
+          "currency": "元",
+          "award_date": null,
+          "disclosure_date": "2026年8月7日"
+        },
+        {
+          "case_id": "wiscom-20260808",
+          "company": "江苏东大金智信息系统有限公司",
+          "project": "南京市公安局溧水分局智能交通及公共安全视频监控维保服务",
+          "award_amount_raw": "5,750.78万元",
+          "currency": "元",
+          "award_date": null,
+          "disclosure_date": "2026年8月7日"
+        }
+      ]
+    }
+  ]
+}
