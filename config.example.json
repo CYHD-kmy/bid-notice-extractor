@@ -1,0 +1,8 @@
+{
+  "model": "qwen3-vl:8b",
+  "model_url": "http://127.0.0.1:11434",
+  "timeout_seconds": 55,
+  "max_output_tokens": 1000,
+  "num_ctx": 4096,
+  "qwen_text_prefill": true
+}

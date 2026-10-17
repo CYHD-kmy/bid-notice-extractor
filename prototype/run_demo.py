@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import sqlite3
+from runtime_config import load_config, preflight, environment
 import time
 from datetime import datetime, timezone
 import pdfplumber
@@ -64,7 +65,7 @@ class Trace:
 def parse_pdfs(paths, trace):
     source, pages = "", []
     for path in paths:
-        trace.log("file_read", file=str(path.relative_to(ROOT)), sha256=digest(path), parser="pdfplumber")
+        trace.log("file_read", file=path.relative_to(ROOT).as_posix(), sha256=digest(path), parser="pdfplumber")
         with pdfplumber.open(path) as pdf:
             for number, page in enumerate(pdf.pages, 1):
                 source += f"\n[文件：{path.name}；页码：{number}]\n"
@@ -80,7 +81,7 @@ def parse_pdfs(paths, trace):
                 if not text.strip():
                     raise ValueError(f"{path.name} 第 {number} 页没有文本层；本原型未接入 OCR")
                 source += text
-                pages.append({"file": str(path.relative_to(ROOT)), "case_id": path.stem, "page": number,
+                pages.append({"file": path.relative_to(ROOT).as_posix(), "case_id": path.stem, "page": number,
                               "width": page.width, "height": page.height, "start": start, "end": len(source),
                               "text": text, "chars": chars})
                 trace.log("pdf_page_parsed", file=path.name, page=number, characters=len(text))
@@ -89,10 +90,11 @@ def parse_pdfs(paths, trace):
     return source, pages
 
 class BudgetedOllama(OllamaLanguageModel):
-    def __init__(self, out, trace):
-        super().__init__(model_id=MODEL, model_url="http://localhost:11434", timeout=55,
-                         think=False, temperature=0, seed=42, num_ctx=4096,
-                         max_output_tokens=1000, keep_alive=0)
+    def __init__(self, out, trace, config=None):
+        self.config = config or load_config()
+        super().__init__(model_id=self.config.model, model_url=self.config.model_url, timeout=self.config.timeout_seconds,
+                         think=False, temperature=0, seed=42, num_ctx=self.config.num_ctx,
+                         max_output_tokens=self.config.max_output_tokens, keep_alive=0)
         self.out, self.trace, self.calls = out, trace, 0
 
     def _post_ollama_json(self, api_url, payload, request_timeout, num_threads, model):
@@ -104,15 +106,16 @@ class BudgetedOllama(OllamaLanguageModel):
         # with the empty reasoning block already completed. Freeze the full
         # transmitted prompt so this model-specific adapter can be audited.
         payload = dict(payload)
-        payload["raw"] = True
-        payload["prompt"] = ("<|im_start|>system\n直接输出所要求的JSON对象。"
+        if self.config.qwen_text_prefill:
+            payload["raw"] = True
+            payload["prompt"] = ("<|im_start|>system\n直接输出所要求的JSON对象。"
                              "所有字段必须引用给定原文，不要推理说明。<|im_end|>\n"
                              "<|im_start|>user\n" + payload["prompt"] + "<|im_end|>\n"
                              "<|im_start|>assistant\n<think>\n\n</think>\n\n")
         write_json(self.out / "model_request.json", dict(payload))
         self.trace.log("model_call_started", model=model, endpoint=api_url, call=self.calls,
-                       timeout_seconds=request_timeout, max_output_tokens=1000, keep_alive=0,
-                       transport="qwen-text-prefill")
+                       timeout_seconds=request_timeout, max_output_tokens=self.config.max_output_tokens, keep_alive=0,
+                       transport="qwen-text-prefill" if self.config.qwen_text_prefill else "native")
         start = time.monotonic()
         response = super()._post_ollama_json(api_url, payload, request_timeout, num_threads, model)
         write_json(self.out / "model_response.json", dict(response))
@@ -215,6 +218,7 @@ def persist(out, result, trace):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, help="模型配置JSON；回放不会连接模型")
     parser.add_argument("--mode", choices=["live", "replay"], default="replay")
     parser.add_argument("--input", nargs="*", type=Path)
     parser.add_argument("--output", type=Path)
@@ -222,6 +226,10 @@ def main():
     parser.add_argument("--expected", type=Path, help="本次输入的人工标签；默认仅评测指纹匹配的内置样例")
     parser.add_argument("--evaluation-manifest", type=Path, help="输入与标签SHA256清单")
     args = parser.parse_args()
+    try:
+        config = load_config(args.config)
+    except (ValueError, TypeError, OSError) as error:
+        parser.error(str(error))
     paths = args.input or sorted((ROOT / "samples").glob("*.pdf"))
     if not 1 <= len(paths) <= 2:
         parser.error("本机轻量试跑限制为1至2份PDF")
@@ -244,8 +252,14 @@ def main():
         source, pages = parse_pdfs(paths, trace)
         write_json(out / "source.json", {"text": source, "pages": pages})
         source_hash = hashlib.sha256(source.encode()).hexdigest()
+        runtime = environment(config)
+        write_json(out / "runtime.json", runtime)
         if args.mode == "live":
-            model = BudgetedOllama(out, trace)
+            trace.log("model_preflight_started", model=config.model, endpoint=config.model_url)
+            runtime["model"] = preflight(config)
+            write_json(out / "runtime.json", runtime)
+            trace.log("model_preflight_finished", **runtime["model"])
+            model = BudgetedOllama(out, trace, config)
             doc = lx.extract(text_or_documents=source, model=model, prompt_description=PROMPT,
                              examples=examples(), fence_output=False, use_schema_constraints=False,
                              tokenizer=UnicodeTokenizer(),
@@ -253,15 +267,15 @@ def main():
                              resolver_params={"suppress_parse_errors": False, "enable_fuzzy_alignment": False,
                                               "accept_match_lesser": False})
             lx.io.save_annotated_documents([doc], output_name="extractions.jsonl", output_dir=str(out))
-            origin = {"model": MODEL, "model_calls": model.calls, "source_sha256": source_hash,
+            origin = {"model": config.model, "model_digest": runtime["model"]["digest"], "model_calls": model.calls, "source_sha256": source_hash,
                       "extractions_sha256": digest(out / "extractions.jsonl"),
-                      "input_files": [{"file": str(p.relative_to(ROOT)), "sha256": digest(p)} for p in paths]}
+                      "input_files": [{"file": p.relative_to(ROOT).as_posix(), "sha256": digest(p)} for p in paths]}
             write_json(out / "origin.json", origin)
         else:
             origin = json.loads((args.replay_from / "origin.json").read_text(encoding="utf-8"))
             if origin["source_sha256"] != source_hash:
                 raise ValueError("输入与录制时不同，拒绝将历史模型输出当作本次提取结果")
-            if origin["input_files"] != [{"file": str(p.relative_to(ROOT)), "sha256": digest(p)} for p in paths]:
+            if [{**item, "file": item["file"].replace("\\", "/")} for item in origin["input_files"]] != [{"file": p.relative_to(ROOT).as_posix(), "sha256": digest(p)} for p in paths]:
                 raise ValueError("PDF文件列表或二进制哈希与录制时不同")
             if origin["extractions_sha256"] != digest(args.replay_from / "extractions.jsonl"):
                 raise ValueError("录制提取文件哈希不一致")
