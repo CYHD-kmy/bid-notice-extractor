@@ -24,6 +24,7 @@ extraction_class 只能为 中标事件；extraction_text 只能是原文中逐�
 attributes 包括 company(中标公司)、project(项目名称)、bidder(招标方，非中标方)、
 award_amount_raw(中标金额原文，保留币种、逗号与单位)、currency(原文币种)、
 award_date(中标日期原文)、disclosure_date(披露日期原文)。所有值必须逐字引用原文，不改写日期。
+如有明确金额标签，另输出 award_amount_type（逐字金额标签，例如中标金额或成交金额）；不要自行猜测口径。
 预算、总投资、合计、最高限价不属于单项目中标金额。金额尚未确定或未披露时，
 award_amount_raw 和 currency 输出空字符串；不填零，不用项目预算代替。
 每页披露日期适用于本页项目。不要输出示例事件、页码、文件名或说明文字。"""
@@ -161,6 +162,7 @@ def build_records(doc, source, pages, trace):
         page = next((p for p in pages if exact and p["start"] <= interval.start_pos < p["end"]), None)
         attrs = item.attributes or {}
         record = {key: (attrs.get(key) if isinstance(attrs.get(key), str) and attrs[key].strip() else None) for key in FIELDS}
+        record["award_amount_type"] = attrs.get("award_amount_type") if isinstance(attrs.get("award_amount_type"), str) else None
         # Project identity comes from the exact, aligned extraction quote.
         record["project"] = item.extraction_text
         record.update(case_id=page["case_id"] if page else "unaligned", event_id=f"event-{index + 1}",
