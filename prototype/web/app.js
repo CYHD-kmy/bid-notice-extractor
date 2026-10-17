@@ -66,7 +66,8 @@ el('next').onclick=async()=>{if(documentPdf&&pageNumber<documentPdf.numPages){pa
 try {
   const response=await fetch('../../outputs/result.json');if(!response.ok)throw new Error('请先运行原型生成 outputs/result.json');
   result=await response.json();
-  const stats=[['事件数',result.records.length],['合成样例字段正确率',`${(result.metrics.field_accuracy*100).toFixed(1)}%`],['待复核事件',result.records.filter(r=>r.validation_status==='needs_review').length],['成功试跑模型调用',result.meta.mode==='live'?result.meta.model_calls_this_run:0]];
+  const accuracy=result.metrics?.field_accuracy;
+  const stats=[['事件数',result.records.length],['配套标签字段正确率',typeof accuracy==='number'?`${(accuracy*100).toFixed(1)}%`:'未评测'],['待复核事件',result.records.filter(r=>r.validation_status==='needs_review').length],['本次运行模型调用',result.meta.model_calls_this_run??0]];
   for(const [label,value] of stats){const card=node('div','stat');card.append(node('div','value',value),node('div','label',label));el('summary').append(card);}
   el('run-mode').textContent=`${result.meta.model} · ${result.meta.mode==='live'?'已保存真实试跑':'录制结果回放'}`;
   if(result.records.length)await selectRecord(result.records[0]);

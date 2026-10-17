@@ -1,0 +1,14 @@
+{
+  "data_kind": "synthetic",
+  "input_files": [
+    {
+      "file": "samples/01_single.pdf",
+      "sha256": "8e23b72e0beced121ee3f6e40511cd30f7c99a836877e93fa6cb963c1e0e47cc"
+    },
+    {
+      "file": "samples/02_multi.pdf",
+      "sha256": "2a143514a1989e1ddd73c586cd888606c0c6ac1573242057b5cc8d48f7b6cc17"
+    }
+  ],
+  "labels_sha256": "0701224dcb519108536132afb4fcf23f17e88c5065a4755be67f1237ed80c882"
+}
