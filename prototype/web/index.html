@@ -6,9 +6,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header><div class="mark">证</div><div><h1>公告抽取核验</h1><p>中标事件结构化提取 · 金额校验 · 原文溯源</p></div><span class="pill">合成样例</span></header>
+  <header><div class="mark">证</div><div><h1>公告抽取核验</h1><p>中标事件结构化提取 · 金额校验 · 原文溯源</p></div><span id="data-kind" class="pill">数据类别待确认</span></header>
   <main>
-    <div class="notice">此演示使用虚构公告。页面只读取已保存的结果，点击和刷新均不调用模型。</div>
+    <div id="run-notice" class="notice">页面读取所选运行结果，点击和刷新不调用模型。</div>
+    <form id="result-form" class="notice"><label for="result-path">运行结果路径</label> <input id="result-path" size="42" value="outputs/result.json" required> <button type="submit">查看结果</button><p>先通过命令行处理新公告，再填入对应的 outputs/运行目录/result.json。</p></form>
     <section id="summary" class="summary" aria-label="试跑结果"></section>
     <div class="layout">
       <section class="panel records-panel"><div class="section-title"><h2>提取的中标事件</h2><span id="run-mode"></span></div><div id="records"></div>
@@ -22,7 +23,7 @@
         <p id="evidence-caption" class="caption" aria-live="polite"></p>
       </section>
     </div>
-    <footer><span>评测仅覆盖 2 份合成 PDF、3 个事件，不能推断真实公告准确率。</span><div><a href="../../outputs/result.json" target="_blank">结构化结果</a><a href="../../outputs/metrics.json" target="_blank">评测明细</a><a href="../../outputs/trace.jsonl" target="_blank">执行日志</a></div></footer>
+    <footer><span id="evaluation-scope">所选运行的评测范围待加载。</span><div><a id="result-link" href="../../outputs/result.json" target="_blank" rel="noopener">结构化结果</a><a id="metrics-link" href="../../outputs/metrics.json" target="_blank" rel="noopener">评测明细</a><a id="trace-link" href="../../outputs/trace.jsonl" target="_blank" rel="noopener">执行日志</a></div></footer>
   </main>
   <script type="module" src="app.js"></script>
 </body>
